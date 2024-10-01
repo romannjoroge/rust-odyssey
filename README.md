@@ -32,3 +32,98 @@ It looks like rust also has a main function in a similar way to C. No wonder not
 rustc does not run the code but it compiles it. I forgot that Rust is compiled.
 
 I wonder how rust macros are different from just normal functions. 
+
+## Cargo
+
+What i know is that cargo is sort of like npm where you can use it to create projects, manage dependencies and build your projects. An interesting thing about creating projects with cargo is that it provides 2 options:
+
+1. cargo new <name> if you also want to create a new folder for the project
+2. cargo init when you already have a project folder and want to put your code in it
+
+In the generate Cargo.toml file there is an edition section under [package]. This section is used to denote the Rust edition being used and not your programs edition or anything like that.
+
+Its a must to have a src directory and for that directory to hold your applications code. This is what cargo expects of a project. Cargo can also build and run your project at once using the ~cargo run~ command. This must be why I forgot that Rust is a compiled language.
+
+~cargo check~ is useful for times when you want to check if your project compiles but you don't need to run it. cargo check just *checks* if project compiles. It dose not build so its alot faster
+
+The result of cargo build is not the most optimized build. For something that produces a very optimized build run ~cargo build --release~
+
+# Chapter 2: Making a guessing game
+
+So declaring variables in Rust is not as guessable as I thought it was. What's the syntax for declaring a mutable variable?
+
+Just for formality I should probably state that printing is done using the ~println~ macro. It expects a string arguement and can take format string.
+To accept input you use the io crate in the std crate. Pretty similar to C. To import a create use the ~use~ statement. To traverse crates use the ~::~ operator. For example
+
+```rust
+use std::io;
+```
+
+For one my guess in how variables are declared was pretty close just that it looks like you don't indicate type? Or at least you do it in another way? An example of defining a mutable string is (Good to remember that by default variables are immutable in Rust!):
+
+```rust
+let mut stringVariable = String::new();
+```
+
+(To define the type of a variable we use the **:** operator. For example):
+```rust
+let guess: u32 = guess.trim().parse().expect("Something Wrong Happened");
+```
+
+Looks like choosing methods of classes also uses the ~::~ operator. These methods are known as associated functions of a type. Correction there are still methods in Rust so associated functions must only be for types and the concept of classes could still be there.
+
+Rust seems to have an interesting way of handling errors where an operation that could lead to an error needs to be **expeceted**. This kinda sounds similar to Python but is done abit differently:
+
+```rust
+some_error_prone_function()
+    .expect("Some message");
+```
+
+Maybe it doesn't handle errors but throws a specific error message?
+
+Even if something is immutable it doesn't mean you can't call its methods. I guess as long as it does not change it.
+
+References are immutable by default so if you want a mutable reference to something you have to do ~&mut~. It also seems that references are used alot to pass variables. Or maybe its coz its a string in this case?
+
+An operation that could result in one or more states i.e failure or success returns an enum. One common enum type is Result which can either be Ok(indicates success) or Err(indicates something wrong). It looks like ~.expect()~ deals with a result if it becomes an Err. To be more precise **expect is a method of the Result enum**. When the Result enum resolves as an Err it crashes with the passed message otherwise it returns the value of the Ok(). 
+
+Looks like in Rust the best practice is to not place brackets for condition of while loop, could be the same as the other control structures.
+
+Looks like division between integers in Rust always produces an integer!
+
+~cargo build~ also installs dependencies in the Cargo.toml file! Cargo.lock file is responsiple for keeping track of the speciific version of the dependencies installed. This must have been what gave me trouble last time! Be careful when you use the ~cargo update~ command to update dependencies!
+
+It's pretty cool that ~cargo doc~ generate a local site that has documentation of the crates installed as dependencies. So I never needed to go searching online for docs!
+
+**match** a enum is a good way to define various ways to deal with the possible different values of the enum
+
+```rust
+use std::cmp::Ordering;
+
+match guess.cmp(...) {
+    Ordering::Less => ...
+    Ordering::More => ...
+    Ordering::Equal => ..
+}
+```
+
+Using match to handle an enum result feels alot better that simply using if else if else. At least there is alot of certainty that you have handled all possible scenarios.
+
+For an infinite loop instead of doing while true you use **loop**. For me loop feels more readable than while true so makes sense. It communicates intent more!
+
+```rust
+loop {
+    // Do stuff
+    break;
+}
+```
+
+You can match a Result type. A shorthand for doing this is:
+```rust
+io::stdin()
+    .read_line() {
+        Ok(text) => text,
+        Err(_) => ...
+    }
+```
+In the Err you define the type of error you are handling. Doing Err(_) means you are handling all errors.
