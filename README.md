@@ -66,6 +66,7 @@ let mut stringVariable = String::new();
 ```
 
 (To define the type of a variable we use the **:** operator. For example):
+
 ```rust
 let guess: u32 = guess.trim().parse().expect("Something Wrong Happened");
 ```
@@ -119,6 +120,7 @@ loop {
 ```
 
 You can match a Result type. A shorthand for doing this is:
+
 ```rust
 io::stdin()
     .read_line() {
@@ -126,4 +128,83 @@ io::stdin()
         Err(_) => ...
     }
 ```
+
 In the Err you define the type of error you are handling. Doing Err(_) means you are handling all errors.
+
+# Chapter 3: Common Programming Concepts
+
+So far I can say that Rust seems to have its own unique way of handling things that are common in other languages e.g loop, matching e.t.c. Let's see more:
+
+## Variables and Mutability
+
+By default variables in Rust are immutable. I think this helps alot in concurrency to avoid things like race conditions, mutex errors etc if something is immutable. We use the **mut** keyword to define something as mutable.
+
+**Constants** in Rust typically start with capital letters (should all be capital letters), when you define them you have to indicate the type of the variable. What's the difference between a constant and an immutable variable? Rust constants can be defined in the global scope.
+
+We have *variable shadowing* where you can define a new variable with the same name as a previously defined variable. Maybe its good for cases where mutliple different things can be explained in the same way? Or their type changes somehow in the future?
+
+```rust
+let guess = std::io::stdin()
+                        .read_line()
+                        .expect("Failed to get user input");
+let guess: u32 = guess.trim().parse().expect("Unable to parse number");
+```
+
+## Data Types In Rust
+
+Rust numbers go from size of 8 to 128 i.e. u8 all the way to u128. There is also usize (maybe variable size int?).
+
+Booleans in rust are annoteted using the **bool** keyword.
+
+Tuples in Rust are a collection of values that can be of different types. Once declared their size cannot change. They are mutable.
+
+```rust
+let tup: (u32, String, bool) = (21, "Roman Njoroge", false)
+```
+
+Unlike in other languages you need to destructure a tuple in order to get values from it. *It is not necessary to annotate types of values in a tuple*.
+
+```rust
+let patient_data = ("Patient 1", 20, "Flu");
+let (name, age, disease) = patient_data;
+
+// To indicate if destructured value is mutable add mut
+let (mut name, age, mut disease) = patient_data;
+```
+
+You can also index with position of item but unlike in other languages you use a dot to index i.e:
+
+```rust
+// Could be useful when you only want specific items from tuple
+let patient_data = ("Patient 1", 20, "Flu");
+println!("{} has come to the hospital with a {}", patient_data.0, patient_data.2);
+```
+
+## Functions
+
+Functions are defined with the following format:
+
+```rust
+fn function_name(args..) -> return_type {
+    // Body
+}
+
+// args takes the form identifier: type
+```
+
+Using the arrow to indicate return type is very reminiscent of typing in Python so not bad. Passing args as identifier: type is similar to typing again and I think typescript.
+
+The *&str* type is the type of a string literal. Looks like *str* and *String* are very interroperable.
+
+Rust functions don't have to be defined before they are called! Very nice.
+
+I was able to guess the difference between a statement and expression! But for clarity sake an expression is something that returns a value while a statement doesn't return a value. Function bodies in Rust are made up of statements that can optionally have an ending statement.
+
+Expressions do not end with a semicolon! If you add a semicolon it becomes a statement! This makes this possible
+
+```rust
+fn return_string(args) -> &str {
+    // If I end it with a semicolon it throws an error because it becomes a statement and you can't return a statement
+    "Some String"
+}
+```
