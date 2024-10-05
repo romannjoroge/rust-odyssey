@@ -180,6 +180,8 @@ let patient_data = ("Patient 1", 20, "Flu");
 println!("{} has come to the hospital with a {}", patient_data.0, patient_data.2);
 ```
 
+Arrays in Rust behave in a similar way to arrays in other languages just that their size is fixed!
+
 ## Functions
 
 Functions are defined with the following format:
@@ -214,3 +216,47 @@ fn return_string(args) -> &str {
 Rust comments are pretty standard just that for whatever reason they don't have multiline comments! Odd.
 
 The only special thing is documentation comments which seem to appear in the documentation of your code. They start with 3 slashes i.e **/// Doc comment** .
+
+## Code Branching
+
+We have our standard if block. Only thing to note is that the condition is not wrapped in brackets! Also Rust does not convert non booleans to booleans when they re used as conditions i.e there are no truthy and falsey values so the example below will throw an error:
+
+```rust
+// This will throw an error
+if number {
+    // Do something
+}
+```
+An if block in Rust is an expression oddly enough and can be assigned to a variable or used in a statement, basically it can be used in whatever way other kinds of expressions can be used. The value of the if expression is the value of the block that is executed. For example for the below example the value of the if block is "Less" since the first block is the one executed and it returns "Less":
+
+```rust
+let number = 10
+let state = if number < 100 { "Less"} else {"More"};
+```
+
+Loops are also expressions (seems like all control structures are expressions!) and the value of the expression is placed after the break. This can be useful in a case where you want to try something am unknown amount of times and in a certain condition you return something. For example:
+
+```rust
+let message = loop {
+    if message_from_space != null {
+        // You don't know when you'll get a message from space but when you do get one return it
+        break message_from_space
+    }
+};
+```
+ Loop labels are also something interesting. I guess similar to assembly!
+
+ For loops seem to only be used to loop through arrays. I am not seeing the for i = x; i = operation(i); i condition pattern. Instead we have:
+
+ ```rust
+ let array = [0, 10, 20, 30];
+
+ for a in array {
+    // Do something
+ }
+
+ // You can use for loops with a Range to achieve similar paradigm to for i = x ...
+ for i in (1..4) {
+    // do something
+ }
+ ```
