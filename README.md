@@ -208,3 +208,9 @@ fn return_string(args) -> &str {
     "Some String"
 }
 ```
+
+## Comments
+
+Rust comments are pretty standard just that for whatever reason they don't have multiline comments! Odd.
+
+The only special thing is documentation comments which seem to appear in the documentation of your code. They start with 3 slashes i.e **/// Doc comment** .

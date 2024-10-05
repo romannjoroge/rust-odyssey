@@ -47,17 +47,17 @@ fn main() {
     store_new_password(site, email, password);
 }
 
-// A password to store file location of passwords file
+/// A password to store file location of passwords file
 fn store_password_file(file_path: &str) {
     println!("Password is stored in {file_path}");
 }
 
-// Get password of site
+/// Get password of site
 fn get_password(site_name: &str) -> &str {
     "Test Password"
 }
 
-// Store a new password
+/// Store a new password
 fn store_new_password(site: &str, email: &str, password: &str) {
     println!("Details site: {site} email: {email} password: {password} have been stored succesfully!");
 }
